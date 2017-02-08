@@ -1,6 +1,7 @@
 package render
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"runtime"
@@ -48,6 +49,7 @@ func (e *Engine) SetWorkers(num int) {
 func (e *Engine) worker(line chan int, wg *sync.WaitGroup) {
 	defer wg.Done()
 	for y := range line {
+		fmt.Printf("Rendering line %.3d of %d\r", y+1, e.height)
 		for x := 0; x < e.width; x++ {
 			e.image.Set(x, y, e.renderer.Render(x, y))
 		}
@@ -58,6 +60,7 @@ func (e *Engine) worker(line chan int, wg *sync.WaitGroup) {
 // and sends it's result to the Set function of the image to save the color.
 func (e *Engine) Run() {
 	// Create a line channel to feed the workers
+	fmt.Printf("Running with %d workers...\n", e.workers)
 	line := make(chan int)
 	// and a WaitGroup to sync them
 	var wg sync.WaitGroup
@@ -74,4 +77,5 @@ func (e *Engine) Run() {
 	close(line)
 	// Wait for all workers to finish
 	wg.Wait()
+	fmt.Printf("Rendering complete! (%d lines)\n", e.height)
 }
