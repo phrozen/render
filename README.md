@@ -36,7 +36,7 @@ Following Go's idiomatic writting, a **Renderer** is any type that implements th
    } 
 }
  ```
-That code can easily be extracted to a function ```Render(x, y int) color.Color``` and all the relevant data needed for the calculation can be stored inside a ```struct``` type so that it satisfies the **Renderer** interface. It is important to note that ```color.Color``` was used in order to make it easy and universal by utilizing teh standard library as much as possible.
+That code can easily be extracted to a function ```Render(x, y int) color.Color``` and all the relevant data needed for the calculation can be stored inside a ```struct``` type so that it satisfies the **Renderer** interface. It is important to note that ```color.Color``` was used in order to make it compatible with the standard library as much as possible.
 
 ```
 type Image interface {
@@ -45,11 +45,11 @@ type Image interface {
 }
 ```
 
-The second is an **Image** interface that can be satisfied by any of the image types inside the ```image``` pkg in Go standard library, there is nothing else to do but to initialize an image and save it afterwards.
+The second is an **Image** interface that can be satisfied by any of the image types inside the ```image``` pkg in Go standard library, there is nothing else to do but to initialize an image type and saving it afterwards.
 
 ```func NewEngine(r Renderer, img Image) *Engine```
 
-To initialize a new rendering engine just call the function ```Engine``` and provide any **Renderer** and any **Image** and then simply call the function ```Run()``` on your engine. The ammout of workers (goroutines) will be ```runtime.NumCPU()``` by default, and it is usually the number of logical processors. The engine will run the double cycles of the image by rendering each line inside a different worker with a queue and saving the result back on the image. *(Note: Image can be a field of the Renderer provided both satisfy their respective interfaces)*
+To initialize a new rendering engine just call the function ```NewEngine``` and provide any **Renderer** and any **Image** and then simply call the function ```Run()``` on your engine. The ammout of workers (goroutines) will be ```runtime.NumCPU()``` by default, and it is usually the number of logical processors (can be changed with ```engine.SetWorkers(n int)```). The engine will run the dual cycles of the image by rendering each line inside a different worker with a queue and saving the result back on the image. *(Note: Image can be a field of the Renderer provided both satisfy their respective interfaces)*
 
 ## Example
 
