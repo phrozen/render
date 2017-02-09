@@ -94,3 +94,4 @@ Running with 4 workers...
 Rendering complete! (1024 lines)
 Saved gradient.png
 ```
+![Gradient](https://raw.githubusercontent.com/phrozen/render/master/example/gradient.png)
