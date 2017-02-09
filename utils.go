@@ -1,6 +1,7 @@
 package render
 
 import (
+	"fmt"
 	"image"
 	"image/png"
 	"os"
@@ -17,5 +18,6 @@ func SavePNG(filename string, img image.Image) error {
 	if err = png.Encode(output, img); err != nil {
 		return err
 	}
+	fmt.Println("Saved", filename)
 	return nil
 }
